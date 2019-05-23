@@ -57,7 +57,6 @@ int main(
 
 	cchoice = tolower(argv[1][1]);
 	int choice = (int)cchoice;
-
 //	do {
 		switch(choice) {
 			case 112:
@@ -72,7 +71,6 @@ int main(
 				exit(-1);
 		}
 //	} while(!pid);
-
 	struct assem_instructor __injector;
 	if ((size_t)-1 > 0xffffffffUL) {
 		memset(__injector._shellcode_, '\0', sizeof(__injector._shellcode_));
