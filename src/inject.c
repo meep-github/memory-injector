@@ -12,13 +12,13 @@ bool AttachToPID( unsigned int __pid );
 bool GetRegisters(
 				struct user_regs_struct *__regs,
 				unsigned int __pid
-		     );
+		 );
 bool InjectShellcode(
 				struct user_regs_struct *__regs,
 				//void *__rip,
 				unsigned int __pid,
 				unsigned int __shellcode_size
-		        );
+		    );
 bool DetachFromPID( unsigned int __pid );
 
 /*
@@ -70,7 +70,7 @@ bool AttachToPID( unsigned int __pid ) {
 bool GetRegisters(
 				struct user_regs_struct *__regs,
 				unsigned int __pid
-		     ) {
+		 ) {
 	if((ptrace(PTRACE_GETREGS, __pid, 0, *(&__regs))) < 0) return false;
 	return true;
 }
@@ -79,7 +79,7 @@ bool InjectShellcode(
 				//void *__rip,
 				unsigned int __pid,
 				unsigned int __shellcode_size
-		        ) {
+		     ) {
 	for(int i = 0; i < __shellcode_size; i++) ptrace(PTRACE_POKETEXT, __pid, __regs->rip+i, *(int*)(_shellcode_ + i));
 	return true;
 }
