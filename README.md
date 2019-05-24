@@ -31,6 +31,8 @@ Example 1:
     
     $ ./inject -n hello
     
+    [!] Found Process ID 2468 From Process Name hello
+    
     [+] Process Attachment Status: Success
     [+] Registers Read Status: Success
     [+] Injecting Shellcode Into Current RIP Address [98ec1ab5]
